@@ -29,7 +29,7 @@ import { isOverlayOpen } from '../../src/client/menu';
 function requireShim(mod: string): unknown {
   if (mod === 'react') return React;
   if (mod === 'react/jsx-runtime') return jsxRuntime;
-  throw new Error('[DeepSeekPet] 独立版不支持模块: ' + mod);
+  throw new Error('[XiaoKePet] 独立版不支持模块: ' + mod);
 }
 
 /** 捕获 shell.overlay 插槽的渲染函数（设置页 section 不渲染，独立版用汉堡菜单即可） */
@@ -49,7 +49,7 @@ const fakeCtx: any = {
       const dispose = fn();
       return typeof dispose === 'function' ? dispose : () => {};
     } catch (e) {
-      console.error('[DeepSeekPet] effect 执行失败:', e);
+      console.error('[XiaoKePet] effect 执行失败:', e);
       return () => {};
     }
   },

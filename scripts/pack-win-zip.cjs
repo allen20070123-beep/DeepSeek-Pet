@@ -1,8 +1,8 @@
 /**
  * Windows 解包目录 → zip 分发包。
  * 用法：node scripts/pack-win-zip.cjs <arch>   （arch: x64 | arm64）
- * - 把 release/win-<arch>-unpacked 压缩为 release/DeepSeekPet-<版本>-win-<arch>.zip
- *   （zip 内顶层文件夹命名为 DeepSeekPet-<版本>-win-<arch>/，解压即见清晰结构）
+ * - 把 release/win-<arch>-unpacked 压缩为 release/XiaoKePet-<版本>-win-<arch>.zip
+ *   （zip 内顶层文件夹命名为 XiaoKePet-<版本>-win-<arch>/，解压即见清晰结构）
  * - 复制到 ../pack_output/WIN/
  * 分发形态：解包目录压缩包——下载者解压即可看到完整文件结构（比自解压单 exe 更透明可信），
  * 首次运行会在 exe 同级自动创建 motion/、sound/、data/（绿色便携，零 C 盘污染）。
@@ -17,7 +17,7 @@ const root = path.join(__dirname, '..');
 const release = path.join(root, 'release');
 // electron-builder 解包目录命名：默认架构 = win-unpacked（无后缀），其余 = win-<arch>-unpacked
 const srcDir = path.join(release, arch === 'x64' ? 'win-unpacked' : `win-${arch}-unpacked`);
-const stageDir = path.join(release, `DeepSeekPet-${pkg.version}-win-${arch}`);
+const stageDir = path.join(release, `XiaoKePet-${pkg.version}-win-${arch}`);
 const zipName = `${path.basename(stageDir)}.zip`;
 const zipPath = path.join(release, zipName);
 

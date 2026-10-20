@@ -24,7 +24,7 @@
 //   - state === null 显示「加载中…」；state.ok=false 必须展示真实原因，绝不伪造数字。
 // ============================================================================
 // 数据侧纯函数/类型（balance.ts）：窗口期判断、重置倒计时文案、峰谷计价档位
-import { urgentWindow, resetInText, deepseekPricingTier } from './balance';
+import { urgentWindow, resetInText, deepseekPricingTier, cnyToTokens, formatTokens } from './balance';
 import type { BalanceState } from './balance';
 // React 类型（DSH 运行时注入 react）：组件返回 ReactNode，h = jsx 工厂
 import type { ReactNode } from 'react';
@@ -113,37 +113,47 @@ export function makeBalanceBubble(rt: {
           rows.push(h('div', { className: 'pet-bub-row', children: '额度数据不可用' }));
         }
       } else {
-        // DeepSeek：单行「余额（峰/谷）¥x.xx」——按北京时间峰谷价档上色（峰红/谷绿）
+        // DeepSeek：小标题「Token 余量」+ 主行「约 x 万（峰/谷）」——余额按当前档位折算单价换算成 token；
+        // 副行保留真实金额「余额 ¥x」，避免折算口径误导。气泡 nowrap 且最大宽 0.5×宠物宽，主行须保持短
         const tier = deepseekPricingTier();
+        const left = cnyToTokens(Number(state.total), tier);
+        rows.push(h('div', { className: 'pet-bub-title', children: 'Token 余量' }));
         rows.push(
           h('div', {
             className: 'pet-bub-row',
             children: h('span', {
               children: [
-                '余额（',
+                left === undefined ? '-' : '约 ' + formatTokens(left),
+                '（',
                 h('span', {
                   className: 'pet-bub-tier pet-bub-tier-' + tier,
                   children: tier === 'peak' ? '峰' : '谷',
                 }),
-                '）¥' + (state.total ?? '-'),
+                '）',
               ],
             }),
           }),
         );
-        // 今日已用（移植自插件 A：ledger 记账 / token 峰谷定价的金额，随气泡一起显示）
+        rows.push(h('div', { className: 'pet-bub-row pet-bub-sub', children: '余额 ¥' + (state.total ?? '-') }));
+        // 今日已用（ledger 记账 / token 峰谷定价的金额）同样折算为 token 显示
         const todayUsage = state.usage?.todayUsage;
         if (typeof todayUsage === 'number' && Number.isFinite(todayUsage)) {
-          rows.push(h('div', { className: 'pet-bub-row pet-bub-sub', children: '今日已用 ¥' + todayUsage.toFixed(2) }));
+          const used = cnyToTokens(todayUsage, tier);
+          if (used !== undefined) {
+            rows.push(
+              h('div', { className: 'pet-bub-row pet-bub-sub', children: '今日已用 约 ' + formatTokens(used) }),
+            );
+          }
         }
       }
     } else {
       // 显式展示不可用原因，绝不伪造数字
       const msg =
         state.reason === 'unsupported'
-          ? '当前服务商暂不支持余额查询'
+          ? '当前服务商暂不支持 Token 余量查询'
           : state.reason === 'credential-missing'
             ? '未配置 API Key，双击宠物已为您打开设置弹窗'
-            : '余额查询失败';
+            : 'Token 余量查询失败';
       rows.push(h('div', { className: 'pet-bub-err', children: msg }));
     }
 

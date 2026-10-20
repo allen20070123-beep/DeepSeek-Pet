@@ -373,3 +373,35 @@ export function deepseekPricingTier(now: Date = new Date()): PricingTier {
   if (weekday === 'Sat' || weekday === 'Sun') return 'idle'; // 周末全天低谷
   return (hour >= 9 && hour < 12) || (hour >= 14 && hour < 18) ? 'peak' : 'idle';
 }
+
+/**
+ * 每百万 token 折算单价（¥，按峰谷档位）：取「缓存未命中输入」与「输出」单价的平均，
+ * 即假设输入输出各占一半的典型对话。来源与 host/usage.ts、electron/server.cjs 的 BASE_PRICE 一致：
+ *   谷 (1.5 + 4.5) / 2 = 3.0；峰 (3.0 + 9.0) / 2 = 6.0
+ * 这只是估算口径（非官方）：缓存命中多则实际可用更多，输出占比高则更少。
+ */
+export const DEEPSEEK_PRICE_PER_M_TOKENS: Record<PricingTier, number> = {
+  idle: 3.0,
+  peak: 6.0,
+};
+
+/**
+ * 金额（¥）→ 可用 token 数（按当前峰谷档位的折算单价）。
+ * @param cny 金额（元）；负数（透支）按 0 计
+ * @param tier 计价档位（默认取当前北京时间档位）
+ * @returns token 数（整数）；金额非法返回 undefined
+ */
+export function cnyToTokens(cny: number, tier: PricingTier = deepseekPricingTier()): number | undefined {
+  if (!Number.isFinite(cny)) return undefined;
+  return Math.round((Math.max(0, cny) / DEEPSEEK_PRICE_PER_M_TOKENS[tier]) * 1e6);
+}
+
+/**
+ * token 数 → 中文短文案：≥1 亿「1.23 亿」、≥1 万「456.7 万」、其余原样整数。
+ * @param n token 数
+ */
+export function formatTokens(n: number): string {
+  if (n >= 1e8) return (n / 1e8).toFixed(2) + ' 亿';
+  if (n >= 1e4) return (n / 1e4).toFixed(1) + ' 万';
+  return String(Math.round(n));
+}

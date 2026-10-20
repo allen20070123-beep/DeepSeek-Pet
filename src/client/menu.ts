@@ -282,53 +282,53 @@ export function petPressUp(): void {
 
 const menuCss = [
   // 按钮悬于角色头部右上方：53%+2 按钮宽(52px≈11.3%) → 64.3%；26%−0.6 按钮高(15.6px≈6%) → 20%（默认 462×260 舞台）
-  '.dsh-pet-menu-btn{position:absolute;left:64.3%;top:20%;transform:translate(-50%,-50%);width:26px;height:26px;border:none;border-radius:6px;background:rgba(32,49,112,.85);cursor:pointer;pointer-events:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0;z-index:5;opacity:0;transition:opacity .15s ease}',
+  '.dsh-pet-menu-btn{position:absolute;left:64.3%;top:20%;transform:translate(-50%,-50%);width:26px;height:26px;border:none;border-radius:6px;background:rgba(184,90,28,.85);cursor:pointer;pointer-events:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0;z-index:5;opacity:0;transition:opacity .15s ease}',
   '.dsh-pet-root:hover .dsh-pet-menu-btn{opacity:1}',
   '.dsh-pet-menu-btn span{display:block;width:14px;height:2px;background:#fff;border-radius:1px}',
-  '.dsh-pet-menu-btn:hover{background:#203170}',
-  '.dsh-pet-menu{position:fixed;min-width:172px;background:rgba(255,255,255,.92);border:1px solid rgba(32,49,112,.35);border-radius:10px;padding:10px 12px;opacity:0;transform:scale(.92) translateY(-4px);transition:opacity .18s ease,transform .2s cubic-bezier(.34,1.56,.64,1);pointer-events:none;z-index:2147483647;box-shadow:0 6px 18px rgba(0,0,0,.18);color-scheme:light;font-family:inherit}',
+  '.dsh-pet-menu-btn:hover{background:#A84F16}',
+  '.dsh-pet-menu{position:fixed;min-width:172px;background:rgba(255,255,255,.92);border:1px solid rgba(184,90,28,.35);border-radius:10px;padding:10px 12px;opacity:0;transform:scale(.92) translateY(-4px);transition:opacity .18s ease,transform .2s cubic-bezier(.34,1.56,.64,1);pointer-events:none;z-index:2147483647;box-shadow:0 6px 18px rgba(0,0,0,.18);color-scheme:light;font-family:inherit}',
   '.dsh-pet-menu.dsh-pet-menu-open{opacity:1;transform:scale(1) translateY(0);pointer-events:auto}',
-  '.dsh-pet-menu-row{display:flex;align-items:center;gap:8px;margin:5px 0;color:#203170;font-size:12px;white-space:nowrap}',
-  '.dsh-pet-menu-range{flex:1;min-width:0;accent-color:#203170}',
-  '.dsh-pet-anime-btn{height:22px;flex:none;margin-left:4px;border:none;border-radius:6px;background:rgba(32,49,112,.85);color:#fff;font-size:11px;line-height:22px;padding:0 8px;cursor:pointer;transition:background .12s ease}',
-  '.dsh-pet-anime-btn:hover{background:#203170}',
-  '.dsh-pet-anime-btn:active{background:#141f47}',
-  '.dsh-pet-menu-select{flex:1;min-width:0;border:1px solid rgba(32,49,112,.4);border-radius:6px;background:rgba(32,49,112,.08);color:#203170;font-size:12px;padding:3px 0;cursor:pointer}',
+  '.dsh-pet-menu-row{display:flex;align-items:center;gap:8px;margin:5px 0;color:#A84F16;font-size:12px;white-space:nowrap}',
+  '.dsh-pet-menu-range{flex:1;min-width:0;accent-color:#A84F16}',
+  '.dsh-pet-anime-btn{height:22px;flex:none;margin-left:4px;border:none;border-radius:6px;background:rgba(184,90,28,.85);color:#fff;font-size:11px;line-height:22px;padding:0 8px;cursor:pointer;transition:background .12s ease}',
+  '.dsh-pet-anime-btn:hover{background:#A84F16}',
+  '.dsh-pet-anime-btn:active{background:#7A3A10}',
+  '.dsh-pet-menu-select{flex:1;min-width:0;border:1px solid rgba(184,90,28,.4);border-radius:6px;background:rgba(184,90,28,.08);color:#A84F16;font-size:12px;padding:3px 0;cursor:pointer}',
   // 打开音效目录按钮（窄、蓝底白字；按压变暗、松开恢复）
-  '.dsh-pet-sounddir-btn{width:20px;height:22px;flex:none;margin-left:4px;border:none;border-radius:6px;background:rgba(32,49,112,.85);color:#fff;font-size:11px;line-height:22px;text-align:center;cursor:pointer;padding:0;transition:background .12s ease}',
-  '.dsh-pet-sounddir-btn:hover{background:#203170}',
-  '.dsh-pet-sounddir-btn:active{background:#141f47}',
-  '.dsh-pet-menu-select:hover{background:rgba(32,49,112,.16)}',
+  '.dsh-pet-sounddir-btn{width:20px;height:22px;flex:none;margin-left:4px;border:none;border-radius:6px;background:rgba(184,90,28,.85);color:#fff;font-size:11px;line-height:22px;text-align:center;cursor:pointer;padding:0;transition:background .12s ease}',
+  '.dsh-pet-sounddir-btn:hover{background:#A84F16}',
+  '.dsh-pet-sounddir-btn:active{background:#7A3A10}',
+  '.dsh-pet-menu-select:hover{background:rgba(184,90,28,.16)}',
   // 用量模式按钮（两个并排互斥）：未激活=略透明白底蓝字；激活=蓝底白字（同鸣谢按钮）
-  '.dsh-pet-mode-btn{flex:1;min-width:0;border:1px solid rgba(32,49,112,.4);border-radius:6px;background:rgba(255,255,255,.55);color:#203170;font-size:12px;padding:3px 0;cursor:pointer;text-align:center;transition:background .15s ease,color .15s ease;font-family:inherit}',
-  '.dsh-pet-mode-btn:hover{background:rgba(32,49,112,.12)}',
-  '.dsh-pet-mode-btn.dsh-pet-mode-active{background:rgba(32,49,112,.85);color:#fff;border-color:rgba(32,49,112,.85)}',
-  '.dsh-pet-menu-volpct{width:36px;text-align:right;color:#203170;font-size:12px}',
+  '.dsh-pet-mode-btn{flex:1;min-width:0;border:1px solid rgba(184,90,28,.4);border-radius:6px;background:rgba(255,255,255,.55);color:#A84F16;font-size:12px;padding:3px 0;cursor:pointer;text-align:center;transition:background .15s ease,color .15s ease;font-family:inherit}',
+  '.dsh-pet-mode-btn:hover{background:rgba(184,90,28,.12)}',
+  '.dsh-pet-mode-btn.dsh-pet-mode-active{background:rgba(184,90,28,.85);color:#fff;border-color:rgba(184,90,28,.85)}',
+  '.dsh-pet-menu-volpct{width:36px;text-align:right;color:#A84F16;font-size:12px}',
   // 鸣谢按钮：菜单首行整宽按钮，蓝底白字、文字居中，左缘与「大小」等行左对齐（同内边距）
-  '.dsh-pet-credit-btn{display:block;width:100%;margin:2px 0 8px;padding:5px 0;border:none;border-radius:6px;background:rgba(32,49,112,.85);color:#fff;font-size:12px;cursor:pointer;text-align:center;font-family:inherit}',
-  '.dsh-pet-credit-btn:hover{background:#203170}',
+  '.dsh-pet-credit-btn{display:block;width:100%;margin:2px 0 8px;padding:5px 0;border:none;border-radius:6px;background:rgba(184,90,28,.85);color:#fff;font-size:12px;cursor:pointer;text-align:center;font-family:inherit}',
+  '.dsh-pet-credit-btn:hover{background:#A84F16}',
   // 鸣谢弹窗：样式与菜单面板一致（白底圆角描边阴影），居中弹出
-  '.dsh-pet-credits{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.95);min-width:280px;max-width:min(560px,86vw);background:rgba(255,255,255,.95);border:1px solid rgba(32,49,112,.35);border-radius:10px;padding:18px 22px 18px 18px;opacity:0;pointer-events:none;z-index:2147483647;box-shadow:0 6px 18px rgba(0,0,0,.18);color-scheme:light;transition:opacity .18s ease,transform .2s cubic-bezier(.34,1.56,.64,1);color:#203170;font-size:12px;line-height:2;font-family:inherit}',
+  '.dsh-pet-credits{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.95);min-width:280px;max-width:min(560px,86vw);background:rgba(255,255,255,.95);border:1px solid rgba(184,90,28,.35);border-radius:10px;padding:18px 22px 18px 18px;opacity:0;pointer-events:none;z-index:2147483647;box-shadow:0 6px 18px rgba(0,0,0,.18);color-scheme:light;transition:opacity .18s ease,transform .2s cubic-bezier(.34,1.56,.64,1);color:#A84F16;font-size:12px;line-height:2;font-family:inherit}',
   '.dsh-pet-credits.dsh-pet-credits-open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}',
   '.dsh-pet-credits-title{text-align:center;font-size:14px;font-weight:700;margin-bottom:4px}',
   '.dsh-pet-credits-row{text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
-  '.dsh-pet-credits-row a{color:#203170;text-decoration:underline;cursor:pointer}',
-  '.dsh-pet-credits-row a:hover{color:#0e1c4a;text-decoration:none}',
+  '.dsh-pet-credits-row a{color:#A84F16;text-decoration:underline;cursor:pointer}',
+  '.dsh-pet-credits-row a:hover{color:#6A320E;text-decoration:none}',
   '.dsh-pet-credits-gap{height:2em}',
-  '.dsh-pet-credits-footer{text-align:left;color:rgba(32,49,112,.72);font-size:11px}',
-  '.dsh-pet-credits-close{position:absolute;top:6px;right:6px;width:24px;height:24px;border:none;border-radius:6px;background:rgba(32,49,112,.85);color:#fff;font-size:13px;line-height:24px;text-align:center;cursor:pointer;padding:0}',
-  '.dsh-pet-credits-close:hover{background:#203170}',
+  '.dsh-pet-credits-footer{text-align:left;color:rgba(184,90,28,.72);font-size:11px}',
+  '.dsh-pet-credits-close{position:absolute;top:6px;right:6px;width:24px;height:24px;border:none;border-radius:6px;background:rgba(184,90,28,.85);color:#fff;font-size:13px;line-height:24px;text-align:center;cursor:pointer;padding:0}',
+  '.dsh-pet-credits-close:hover{background:#A84F16}',
   // API 更新弹窗（风格同鸣谢弹窗）
-  '.dsh-pet-apibox{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.95);min-width:300px;max-width:min(520px,86vw);background:rgba(255,255,255,.95);border:1px solid rgba(32,49,112,.35);border-radius:10px;padding:16px 18px;opacity:0;pointer-events:none;z-index:2147483647;box-shadow:0 6px 18px rgba(0,0,0,.18);color-scheme:light;transition:opacity .18s ease,transform .2s cubic-bezier(.34,1.56,.64,1);color:#203170;font-size:12px;line-height:2;font-family:inherit}',
+  '.dsh-pet-apibox{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.95);min-width:300px;max-width:min(520px,86vw);background:rgba(255,255,255,.95);border:1px solid rgba(184,90,28,.35);border-radius:10px;padding:16px 18px;opacity:0;pointer-events:none;z-index:2147483647;box-shadow:0 6px 18px rgba(0,0,0,.18);color-scheme:light;transition:opacity .18s ease,transform .2s cubic-bezier(.34,1.56,.64,1);color:#A84F16;font-size:12px;line-height:2;font-family:inherit}',
   '.dsh-pet-apibox.dsh-pet-apibox-open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}',
   '.dsh-pet-api-label{text-align:left;font-size:12px;font-weight:700;margin-bottom:2px}',
-  '.dsh-pet-api-input{display:block;width:100%;box-sizing:border-box;border:1px solid rgba(32,49,112,.4);border-radius:6px;padding:4px 8px;font-size:12px;color:#203170;background:#fff;outline:none;font-family:inherit}',
-  '.dsh-pet-api-input:focus{border-color:#203170}',
+  '.dsh-pet-api-input{display:block;width:100%;box-sizing:border-box;border:1px solid rgba(184,90,28,.4);border-radius:6px;padding:4px 8px;font-size:12px;color:#A84F16;background:#fff;outline:none;font-family:inherit}',
+  '.dsh-pet-api-input:focus{border-color:#A84F16}',
   '.dsh-pet-api-gap{height:1em}',
   '.dsh-pet-api-btns{display:flex;gap:8px}',
-  '.dsh-pet-api-btn{flex:1;min-width:0;border:1px solid rgba(32,49,112,.4);border-radius:6px;background:rgba(255,255,255,.55);color:#203170;font-size:12px;padding:4px 0;cursor:pointer;text-align:center;transition:background .15s ease,color .15s ease;font-family:inherit}',
-  '.dsh-pet-api-btn:hover{background:rgba(32,49,112,.12)}',
-  '.dsh-pet-api-btn.dsh-pet-api-active{background:rgba(32,49,112,.85);color:#fff;border-color:rgba(32,49,112,.85)}',
+  '.dsh-pet-api-btn{flex:1;min-width:0;border:1px solid rgba(184,90,28,.4);border-radius:6px;background:rgba(255,255,255,.55);color:#A84F16;font-size:12px;padding:4px 0;cursor:pointer;text-align:center;transition:background .15s ease,color .15s ease;font-family:inherit}',
+  '.dsh-pet-api-btn:hover{background:rgba(184,90,28,.12)}',
+  '.dsh-pet-api-btn.dsh-pet-api-active{background:rgba(184,90,28,.85);color:#fff;border-color:rgba(184,90,28,.85)}',
 ].join('\n');
 
 // —— DOM 单例引用与开关状态旗标（ensureMenu 只构建一次；旗标是各层状态机的唯一真相源）——
@@ -505,7 +505,7 @@ function buildMenu(): HTMLDivElement {
   modeLedgerBtn.type = 'button';
   modeLedgerBtn.className = 'dsh-pet-mode-btn';
   modeLedgerBtn.textContent = '本地记账(推荐)';
-  modeLedgerBtn.title = '小鲸鱼记账：余额差值自动累计今日用量';
+  modeLedgerBtn.title = '本地记账：余额差值自动累计今日用量';
   modeLedgerBtn.addEventListener('click', () => {
     setUsageMode('ledger');
     closeApiPopup(); // 切走 API 模式：收起 API 更新弹窗
@@ -597,7 +597,8 @@ function buildCredits(): HTMLDivElement {
   title.textContent = '特别鸣谢';
 
   const lines: Array<{ prefix: string; text: string; href?: string }> = [
-    { prefix: '形象设计：', text: '@ZipZipPipe （bilibili）', href: 'https://space.bilibili.com/4168597' },
+    { prefix: '小克形象：', text: 'Allen' },
+    { prefix: '原 DeepSeek娘形象设计：', text: '@ZipZipPipe （bilibili）', href: 'https://space.bilibili.com/4168597' },
     {
       prefix: '改造基底：',
       text: '@宇宙之外的浩瀚宇（bilibili）',

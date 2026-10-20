@@ -118,8 +118,8 @@
     "typescript-eslint": "^8.67.0"
   },
   "build": {
-    "appId": "com.deepseekpet.app",
-    "productName": "DeepSeekPet",
+    "appId": "com.xiaokepet.app",
+    "productName": "XiaoKePet",
     "asar": true,
     "directories": {
       "output": "release"
@@ -144,9 +144,9 @@
       "category": "public.app-category.entertainment",
       "icon": "assets/icon.png",
       "extendInfo": {
-        "CFBundleDisplayName": "DeepSeek娘相随"
+        "CFBundleDisplayName": "小克"
       },
-      "artifactName": "DeepSeekPet-${version}-mac-${arch}.${ext}",
+      "artifactName": "XiaoKePet-${version}-mac-${arch}.${ext}",
       "timestamp": null
     },
     "win": {
@@ -160,7 +160,7 @@
       ],
       "icon": "assets/icon.png",
       "signExecutable": false,
-      "artifactName": "DeepSeekPet-${version}-win-${arch}.${ext}"
+      "artifactName": "XiaoKePet-${version}-win-${arch}.${ext}"
     }
   }
 }

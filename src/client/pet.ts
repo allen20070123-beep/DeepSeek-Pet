@@ -1101,7 +1101,7 @@ export function makePetUI(rt: {
           return { left: left + 'px', top: top + 'px', right: 'auto', bottom: 'auto' };
         })();
     // 双缓冲视频公共属性：静音 + 内联播放 + 自动播放（浏览器自动播放策略要求 muted）
-    const commonVideoProps = { muted: true, playsInline: true, autoPlay: true, title: 'DeepSeek娘' };
+    const commonVideoProps = { muted: true, playsInline: true, autoPlay: true, title: '小克' };
     // 命中层 props：HIT_BOX 是 thumb 640×360 像素坐标，换算为舞台百分比定位；点击/拖拽事件直接绑在命中层上
     const hitProps = {
       className: 'dsh-pet-hit',
@@ -1117,7 +1117,7 @@ export function makePetUI(rt: {
       onPointerMove: handlePointerMove,
       onPointerUp: handlePointerUp,
       onPointerCancel: handlePointerUp,
-      title: 'DeepSeek娘',
+      title: '小克',
     };
     // DOM 结构：root(定位层) > [余额气泡(条件渲染)、汉堡菜单按钮、stage(舞台) > [videoA、videoB、hit]]
     // 注意：h 的第二个参数（props）恒为对象；children 内条件不满足处传 null（children 允许 null，props 不允许）

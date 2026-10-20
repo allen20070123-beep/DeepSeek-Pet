@@ -28,11 +28,11 @@ const path = require('path');
 const fs = require('fs');
 
 // ==================== 用户数据目录（独立版专属命名空间） ====================
-// 独立版与 DSH 插件彻底解耦：统一使用「DeepSeek.Pet」作为用户数据母目录，
+// 独立版与 DSH 插件彻底解耦：统一使用「XiaoKe.Pet」作为用户数据母目录，
 // 避免与 DeepSeek Harness（dsh-*）及原作者的 dsh-pet 产生误解或文件冲突。
-// - macOS → ~/Library/Application Support/DeepSeek.Pet
+// - macOS → ~/Library/Application Support/XiaoKe.Pet
 // - Windows 便携版 → 优先 exe 同级 data/（绿色便携、零 C 盘污染）；
-//   exe 目录只读时回落 %APPDATA%\DeepSeek.Pet，并弹出「数据存储提示」窗请用户确认
+//   exe 目录只读时回落 %APPDATA%\XiaoKe.Pet，并弹出「数据存储提示」窗请用户确认
 // 注意：必须在 require('./server.cjs') 之前设置——server.cjs 在模块加载期就会解析动画目录。
 // 便携 exe 的真实所在目录：自解压便携包运行时 execPath 指向 %TEMP%，
 // PORTABLE_EXECUTABLE_DIR 才是用户 exe 所在处（解包目录分发/未打包时不存在，回落 execPath 目录）
@@ -60,37 +60,14 @@ if (process.platform === 'win32') {
     app.setPath('userData', path.join(PORTABLE_DIR, 'data'));
   } else {
     storageFallback = true;
-    app.setPath('userData', path.join(app.getPath('appData'), 'DeepSeek.Pet'));
+    app.setPath('userData', path.join(app.getPath('appData'), 'XiaoKe.Pet'));
   }
 } else {
-  app.setPath('userData', path.join(app.getPath('appData'), 'DeepSeek.Pet'));
+  app.setPath('userData', path.join(app.getPath('appData'), 'XiaoKe.Pet'));
 }
 migrateAnimeDirName(); // 旧名 DSH.Pet.Anime → anime（同样必须在 require 前，否则目录解析到旧名）
 
 const { startServer, setDisplayInfoProvider } = require('./server.cjs');
-
-/** 把历史版本的旧母目录数据迁入新目录（仅迁自有子目录，Electron 自身缓存不迁） */
-function migrateLegacyDirs() {
-  try {
-    const oldBase = path.join(app.getPath('appData'), 'dsh-pet'); // 历史版本 userData 落点
-    const newBase = app.getPath('userData');
-    if (oldBase === newBase || !fs.existsSync(oldBase)) return;
-    for (const [srcSub, dstSub] of [
-      ['DSH.Pet.Anime', 'anime'],
-      ['sound', 'sound'],
-    ]) {
-      const src = path.join(oldBase, srcSub);
-      const dst = path.join(newBase, dstSub);
-      if (fs.existsSync(src) && !fs.existsSync(dst)) {
-        fs.mkdirSync(newBase, { recursive: true });
-        fs.renameSync(src, dst);
-        bootLog('migrated ' + srcSub + ' → ' + dst);
-      }
-    }
-  } catch (e) {
-    bootLog('migrate error: ' + String(e));
-  }
-}
 
 /** 动画目录改名迁移：DSH.Pet.Anime → anime（与 sound 命名统一；保留用户 DIY 文件，整体改名） */
 function migrateAnimeDirName() {
@@ -108,13 +85,13 @@ function migrateAnimeDirName() {
 }
 
 /**
- * Windows 旧数据迁移：%APPDATA%\DeepSeek.Pet（历史版本落点）→ 当前 userData（exe 同级 data/）。
+ * Windows 旧数据迁移：%APPDATA%\XiaoKe.Pet（历史版本落点）→ 当前 userData（exe 同级 data/）。
  * 仅复制顶层文件（设置/账本/API Key），不覆盖；Electron 缓存不迁。
  */
 function migrateWinUserData() {
   if (process.platform !== 'win32') return;
   try {
-    const oldDir = path.join(app.getPath('appData'), 'DeepSeek.Pet');
+    const oldDir = path.join(app.getPath('appData'), 'XiaoKe.Pet');
     const newDir = app.getPath('userData');
     if (oldDir === newDir || !fs.existsSync(oldDir)) return;
     fs.mkdirSync(newDir, { recursive: true });
@@ -461,11 +438,11 @@ function createTray() {
     bootLog('tray icon load failed, use default');
   }
   tray = new Tray(icon || nativeImage.createEmpty());
-  tray.setToolTip('DeepSeek娘相随');
+  tray.setToolTip('小克相随');
   // 右键托盘图标弹出原生上下文菜单（Windows 上 setContextMenu 后右键自动弹出）
   tray.setContextMenu(
     Menu.buildFromTemplate([
-      { label: 'DeepSeek娘相随', enabled: false },
+      { label: '小克相随', enabled: false },
       { type: 'separator' },
       {
         label: '归中',
@@ -492,7 +469,6 @@ app.whenReady()
   .then(async () => {
     bootLog('app ready');
     if (process.platform === 'win32' && storageFallback) await showFallbackDialog(); // 只读目录回落 AppData：先弹提示确认
-    migrateLegacyDirs(); // 旧母目录（dsh-pet）→ DeepSeek.Pet（必须在服务播种前，否则 DIY 文件不会被迁移）
     migrateWinUserData(); // Windows 旧 %APPDATA% 数据 → exe 同级 data/
     const { port } = await startServer();
     bootLog('server port=', port);

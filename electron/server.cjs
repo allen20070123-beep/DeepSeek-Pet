@@ -13,7 +13,7 @@
  *   - API key：/api-key（GET 只回 hasKey / PUT 保存 / DELETE 清除，文件 0600）
  *   - 打开音效目录：/open-sound-dir（macOS 用 open、Windows 用 explorer）
  *
- * 数据目录（app.getPath('userData')，即 ~/Library/Application Support/DeepSeekPet）：
+ * 数据目录（app.getPath('userData')，即 ~/Library/Application Support/XiaoKe.Pet）：
  *   widget-settings.json / main-config.json / api-key.json / .dshw-usage.json / sound/
  *   首次启动时把包内两套自带音效（小黄鸭/音效）播种进 sound/ 目录。
  *
@@ -43,11 +43,11 @@ try {
   electronApp = null;
 }
 const isPackagedApp = electronApp ? electronApp.isPackaged : false;
-/** 应用数据目录（打包后）：~/Library/Application Support/DeepSeek.Pet（main.cjs 已重定向） */
+/** 应用数据目录（打包后）：~/Library/Application Support/XiaoKe.Pet（main.cjs 已重定向） */
 const appUserDataDir = () =>
   electronApp ? electronApp.getPath('userData') : path.join(os.homedir(), '.dsh', 'dsh-pet');
 /** 用户数据目录（设置/账本/API Key）：
- * - 打包独立版：Electron userData（main.cjs 已重定向为 DeepSeek.Pet）——与 DSH 插件彻底分离
+ * - 打包独立版：Electron userData（main.cjs 已重定向为 XiaoKe.Pet）——与 DSH 插件彻底分离
  * - 纯 node 测试环境：回落 ~/.dsh/dsh-pet（与插件版同源，便于测试装置复用既有数据）
  * 注意：音效与动画目录另见 resolveSoundDir / ANIME_DIR */
 const USER_DATA =
@@ -158,7 +158,7 @@ function parseJsonc(text) {
 
 /**
  * 用户动画目录（DIY 可维护性）：
- * - macOS 应用：~/Library/Application Support/DeepSeek.Pet/anime
+ * - macOS 应用：~/Library/Application Support/XiaoKe.Pet/anime
  * - Windows 便携版：exe 同级 motion/
  * - 开发/测试模式：USER_DATA/anime（避免污染真实目录）
  * 首次启动把包内动画按「触发类别」分文件夹播种（idle/turn/moves/clicks/drag/balance + 各分类动作 id），
@@ -267,7 +267,7 @@ const LEDGER_PATH = path.join(USER_DATA, '.dshw-usage.json');
 /**
  * 用户音效目录（可写、可被系统文件管理器打开）：
  * - Windows 便携版：exe 同级的 sound/ 文件夹——相对 exe 定位，用户一眼可见（不可写时回落用户数据目录）；
- * - macOS 应用：标准应用数据目录 app.getPath('userData')/sound（~/Library/Application Support/DeepSeekPet/sound），
+ * - macOS 应用：标准应用数据目录 app.getPath('userData')/sound（~/Library/Application Support/XiaoKe.Pet/sound），
  *   不再使用与插件版共享的 ~/.dsh/dsh-pet；经菜单「···」按钮一键打开；
  * - 开发模式：与插件版共享的 USER_DATA/sound（不污染真实应用数据）。
  */
@@ -725,7 +725,7 @@ function watchAnimeDir() {
 /** 启动服务器：返回 { port }（随机可用端口，由 main.cjs 注入页面地址） */
 function startServer() {
   return new Promise((resolve) => {
-    migrateUserData(); // 旧插件共享目录 → DeepSeek.Pet 独立目录（文件级迁移，不覆盖）
+    migrateUserData(); // 旧插件共享目录 → XiaoKe.Pet 独立目录（文件级迁移，不覆盖）
     migrateAnimeFolders();
     seedBuiltinSounds();
     seedAnimeDirs();
