@@ -16,7 +16,17 @@ jobs:
         with:
           node-version: 22
       # package-lock.json 里的下载地址指向 npmmirror 镜像，云端改走 npm 官方源
-      - run: npm ci --registry=https://registry.npmjs.org --replace-registry-host=always
+      - name: 安装依赖
+        shell: bash
+        run: |
+          set -o pipefail
+          if ! npm ci --registry=https://registry.npmjs.org --replace-registry-host=always 2>&1 | tee npm.log; then
+            # 把错误摘要写成注释，方便在运行概览里直接看到原因
+            grep -E "npm (error|ERR)" npm.log | tail -15 | while IFS= read -r l; do echo "::warning title=npm ci::$l"; done
+            echo "::warning::npm ci 失败，改用 npm install 重新解析依赖"
+            rm -rf node_modules
+            npm install --registry=https://registry.npmjs.org --no-audit --no-fund
+          fi
       - run: npm run build:app
       - run: npx electron-builder --win dir --x64 --publish never
       - uses: actions/upload-artifact@v4
@@ -31,7 +41,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm ci --registry=https://registry.npmjs.org --replace-registry-host=always
+      - name: 安装依赖
+        shell: bash
+        run: |
+          set -o pipefail
+          if ! npm ci --registry=https://registry.npmjs.org --replace-registry-host=always 2>&1 | tee npm.log; then
+            # 把错误摘要写成注释，方便在运行概览里直接看到原因
+            grep -E "npm (error|ERR)" npm.log | tail -15 | while IFS= read -r l; do echo "::warning title=npm ci::$l"; done
+            echo "::warning::npm ci 失败，改用 npm install 重新解析依赖"
+            rm -rf node_modules
+            npm install --registry=https://registry.npmjs.org --no-audit --no-fund
+          fi
       - run: npm run build:app
       # 无开发者证书：用 ad-hoc 签名，首次打开需右键 → 打开
       - run: npx electron-builder --mac dmg --arm64 --publish never -c.mac.identity=-
