@@ -1,0 +1,43 @@
+# 小克安装包云端构建：在 GitHub 的 Actions 页面点「Run workflow」即可，
+# 跑完后在该次运行页面底部的 Artifacts 下载 Windows 文件夹包 / macOS dmg。
+name: 构建安装包
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # package-lock.json 里的下载地址指向 npmmirror 镜像，云端改走 npm 官方源
+      - run: npm ci --registry=https://registry.npmjs.org --replace-registry-host=always
+      - run: npm run build:app
+      - run: npx electron-builder --win dir --x64 --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: XiaoKePet-win-x64
+          path: release/win-unpacked/
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --registry=https://registry.npmjs.org --replace-registry-host=always
+      - run: npm run build:app
+      # 无开发者证书：用 ad-hoc 签名，首次打开需右键 → 打开
+      - run: npx electron-builder --mac dmg --arm64 --publish never -c.mac.identity=-
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: XiaoKePet-mac-arm64
+          path: release/*.dmg
